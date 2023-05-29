@@ -7,7 +7,10 @@ static DEFAULT_PORT: u16 = 8080;
 
 #[get("/")]
 fn index(client_addr: &ClientRealAddr) -> String {
-    client_addr.get_ipv4_string().unwrap()
+    match client_addr.get_ipv4_string() {
+        Some(ipv4) => ipv4,
+        None => client_addr.get_ipv6_string()
+    }
 }
 
 fn get_port(port_key: &'static str) -> u16 {
